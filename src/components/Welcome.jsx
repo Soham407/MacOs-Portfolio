@@ -55,6 +55,10 @@ const setupTextHover = (container, type) => {
 
   container.addEventListener("mousemove", handleMouseMove);
   container.addEventListener("mouseleave", handleMouseLeave);
+  return () => {
+   container.removeEventListener("mousemove", handleMouseMove);
+   container.removeEventListener("mouseleave", handleMouseLeave);
+  };
 };
 
 const Welcome = () => {
@@ -62,8 +66,13 @@ const Welcome = () => {
   const subtitleRef = useRef(null);
 
   useGSAP(() => {
-    setupTextHover(subtitleRef.current, "subtitle");
-    setupTextHover(titleRef.current, "title");
+    const cleanupSubtitle = setupTextHover(subtitleRef.current, "subtitle");
+    const cleanupTitle = setupTextHover(titleRef.current, "title");
+
+    return () => {
+      cleanupSubtitle?.();
+      cleanupTitle?.();
+    };
   });
 
   return (
