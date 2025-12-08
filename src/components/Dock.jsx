@@ -9,6 +9,7 @@ const Dock = () => {
   const dockref = useRef(null);
   const toggleApp = (app) => {
     console.log("Opening app:", app.name);
+    // TODO: replace with real navigation/open behavior
   };
 
   useGSAP(() => {
@@ -74,7 +75,7 @@ const Dock = () => {
               data-tooltip-content={app.name}
               data-tooltip-delay-show={150}
               disabled={!app.canOpen}
-              onClick={() => toggleApp({ id: app.id, canOpen: app.canOpen })}
+              onClick={() => toggleApp(app)}
             >
               <img
                 src={`/images/${app.icon}`}
