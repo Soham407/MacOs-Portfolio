@@ -7,17 +7,16 @@ import gsap from "gsap";
 import useWindowStore from "#store/window";
 
 const Dock = () => {
-  const {openWindow , closeWindow, windows } = useWindowStore();
+  const { openWindow, closeWindow, windows } = useWindowStore();
   const dockref = useRef(null);
   const toggleApp = (app) => {
-    if(!app.canOpen) return;
-    const window = windows[app.id];
-    if(window.isOpen) {
+    if (!app.canOpen) return;
+    const winEntry = windows[app.id];
+    if (winEntry && winEntry.isOpen) {
       closeWindow(app.id);
-    }else {
+    } else {
       openWindow(app.id);
     }
-    
   };
 
   useGSAP(() => {
