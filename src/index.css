@@ -11,6 +11,7 @@ body {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  color-scheme: light !important;
 }
 
 @theme {
