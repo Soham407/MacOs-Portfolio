@@ -2,7 +2,7 @@ import gsap from 'gsap'
 import { Draggable } from 'gsap/Draggable'
 
 
-import { Terminal } from '#windows'
+import { Safari, Terminal } from '#windows'
 import {Navbar, Welcome, Dock} from '#components'
 
 
@@ -17,6 +17,7 @@ const App = () => {
       <Welcome />
       <Dock />
       <Terminal />
+      <Safari />
     </main>
   )
 }
