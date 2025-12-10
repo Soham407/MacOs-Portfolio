@@ -8,6 +8,8 @@ const WindowWrapper = (Component, windowKey) => {
   const Wrapped = (props) => {
     const { focusWindow, windows } = useWindowStore();
     const windowData = windows[windowKey];
+    const ref = useRef(null);
+    const isOpeningRef = useRef(false);
 
     if (!windowData) {
       console.warn(
@@ -15,10 +17,6 @@ const WindowWrapper = (Component, windowKey) => {
       );
       return null;
     }
-
-    const { isOpen, zIndex } = windowData;
-    const ref = useRef(null);
-    const isOpeningRef = useRef(false);
 
     // Helper function to get dock icon position relative to window
     const getDockIconOffset = () => {
@@ -49,10 +47,14 @@ const WindowWrapper = (Component, windowKey) => {
       const el = ref.current;
       if (!el) return;
 
+      // Kill any running tweens to prevent overlapping animations
+      gsap.killTweensOf(el);
+      isOpeningRef.current = false;
+
       // Set transform origin for dock-style scaling
       el.style.transformOrigin = "center bottom";
 
-      if (isOpen && !isOpeningRef.current) {
+      if (windowData?.isOpen && !isOpeningRef.current) {
         // Opening animation - macOS style from dock icon
         isOpeningRef.current = true;
         el.style.display = "block";
@@ -89,7 +91,7 @@ const WindowWrapper = (Component, windowKey) => {
 
           gsap.fromTo(el, fromVars, toVars);
         });
-      } else if (!isOpen && isOpeningRef.current === false) {
+      } else if (!windowData?.isOpen) {
         // Closing animation - macOS style to dock icon
         const dockOffset = getDockIconOffset();
 
@@ -104,6 +106,7 @@ const WindowWrapper = (Component, windowKey) => {
             el.style.display = "none";
             // Reset position for next opening
             gsap.set(el, { x: 0, y: 0 });
+            isOpeningRef.current = false;
           },
         };
 
@@ -114,7 +117,7 @@ const WindowWrapper = (Component, windowKey) => {
 
         gsap.to(el, closeVars);
       }
-    }, [isOpen]);
+    }, [windowData?.isOpen]);
 
     useGSAP(() => {
       const el = ref.current;
@@ -131,7 +134,7 @@ const WindowWrapper = (Component, windowKey) => {
       if (!el) return;
 
       // Set initial state without animation
-      if (!isOpen) {
+      if (!windowData?.isOpen) {
         el.style.display = "none";
         el.style.filter = "blur(20px)";
         el.style.boxShadow = "0 0 0px rgba(0, 0, 0, 0)";
@@ -142,7 +145,7 @@ const WindowWrapper = (Component, windowKey) => {
     }, []);
 
     return (
-      <section id={windowKey} ref={ref} style={{ zIndex }} className="absolute">
+      <section id={windowKey} ref={ref} style={{ zIndex: windowData?.zIndex }} className="absolute">
         <Component {...props} />
       </section>
     );
