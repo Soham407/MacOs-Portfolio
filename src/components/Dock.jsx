@@ -81,6 +81,7 @@ const Dock = () => {
               data-tooltip-id="dock-tooltip"
               data-tooltip-content={app.name}
               data-tooltip-delay-show={150}
+              data-window-id={app.id}
               disabled={!app.canOpen}
               onClick={() => toggleApp(app)}
             >
