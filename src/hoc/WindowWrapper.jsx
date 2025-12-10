@@ -8,6 +8,14 @@ const WindowWrapper = (Component, windowKey) => {
   const Wrapped = (props) => {
     const { focusWindow, windows } = useWindowStore();
     const windowData = windows[windowKey];
+
+    if (!windowData) {
+      console.warn(
+        `WindowWrapper: No window data found for key "${windowKey}"`
+      );
+      return null;
+    }
+
     const { isOpen, zIndex } = windowData;
     const ref = useRef(null);
     const isOpeningRef = useRef(false);
@@ -108,13 +116,15 @@ const WindowWrapper = (Component, windowKey) => {
       }
     }, [isOpen]);
 
-    useGSAP(()=>{
+    useGSAP(() => {
       const el = ref.current;
-      if(!el) return;
+      if (!el) return;
 
-      const [instance] = Draggable.create(el, { onPress : () => focusWindow(windowKey) });
+      const [instance] = Draggable.create(el, {
+        onPress: () => focusWindow(windowKey),
+      });
       return () => instance.kill();
-    }, []);  
+    }, []);
 
     useLayoutEffect(() => {
       const el = ref.current;
