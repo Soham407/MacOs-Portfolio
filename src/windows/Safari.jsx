@@ -17,7 +17,7 @@ import { blogPosts } from "#constants";
 const Safari = () => {
   return (
     <>
-      <div id="window-header" className="flex items-center gap-3 px-4">
+      <div id="window-header" className=" flex items-center gap-3 px-4">
         <WindowControls target="safari" />
 
         <PanelLeft className="icon" />
@@ -60,7 +60,7 @@ const Safari = () => {
                     <div className="content">
                         <p>{date}</p>
                         <h3>{title}</h3>
-                        <a href={link} target="_blank" rel="noopenernoreffer">Check Out the full post 
+                        <a href={link} target="_blank" rel="noopener noreffer">Check Out the full post 
                             <MoveRight className="icon-hover" />
                         </a>
                     </div>
