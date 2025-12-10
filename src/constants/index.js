@@ -450,7 +450,7 @@ const RESUME_LOCATION = {
       kind: "file",
       fileType: "pdf",
       // you can add `href` if you want to open a hosted resume
-    //   href: "/your/resume/path.pdf",
+      //   href: "/your/resume/path.pdf",
     },
   ],
 };
@@ -484,6 +484,12 @@ const TRASH_LOCATION = {
 };
 
 export const locations = {
+  favourites: {
+    work: WORK_LOCATION,
+    about: ABOUT_LOCATION,
+    resume: RESUME_LOCATION,
+    trash: TRASH_LOCATION,
+  },
   work: WORK_LOCATION,
   about: ABOUT_LOCATION,
   resume: RESUME_LOCATION,
